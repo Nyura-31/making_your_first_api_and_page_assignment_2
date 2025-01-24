@@ -50,6 +50,31 @@ List of Status Codes to Handle:
 200, 201, 204, 400, 401, 403, 404, 405, 429, 500, 502, 503, 504
 */
 
+const statusDescriptions = {
+  200: 'OK - The request was successful.',
+  201: 'Created - The request was successful, and a new resource was created.',
+  400: 'Bad Request - The request was invalid or cannot be served.',
+  401: 'Unauthorized - Authentication is required and has failed or has not yet been provided.',
+  404: 'Not Found - The requested resource could not be found.',
+  500: 'Internal Server Error - A generic server error occurred.',
+  // Add more status codes as needed
+};
+
+// GET endpoint
+app.get('/status-info', (req, res) => {
+  const code = req.query.code; // Extract the 'code' query parameter
+  if (statusDescriptions[code]) {
+      res.status(200).json({
+          code: parseInt(code),
+          description: statusDescriptions[code]
+      });
+  } else {
+      res.status(400).json({
+          error: 'Invalid status code. Please provide a valid HTTP status code.'
+      });
+  }
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Status Code API is running on http://localhost:${PORT}`);
